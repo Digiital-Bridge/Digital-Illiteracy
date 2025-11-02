@@ -311,13 +311,13 @@ nav a:hover {
 
 /* First image position */
 .consequence-img.img1 {
-  top: 90px;   /* vertical placement */
+  top: 50px;   /* vertical placement */
   left: 40px;  /* move left/right */
 }
 
 /* Second image position */
 .consequence-img.img2 {
-  top: 380px;  /* lower on the page */
+  top: 340px;  /* lower on the page */
   left: 40px;  /* slightly shifted right */
 }
 
@@ -375,4 +375,5 @@ nav a:hover {
     text-align: center;
   }
 }
+
 
