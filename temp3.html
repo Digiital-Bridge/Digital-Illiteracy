@@ -1,0 +1,1288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Evidence of Action</title>
+<link rel="icon" type="image/png" href="logo.png">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+:root {
+--primary-gradient: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+--secondary-gradient: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+--accent-gradient: linear-gradient(135deg, #3b82f6 0%, #60a5fa 100%);
+--glass-bg: rgba(255, 255, 255, 0.06);
+--glass-border: rgba(255, 255, 255, 0.08);
+--text-primary: #ffffff;
+--text-secondary: rgba(255, 255, 255, 0.92);
+--text-muted: rgba(255, 255, 255, 0.7);
+--shadow-primary: 0 25px 50px rgba(0, 0, 0, 0.25);
+--shadow-glow: 0 0 30px rgba(59, 130, 246, 0.2);
+}
+/* PDF Embed Fix */
+embed[type="application/pdf"] {
+filter: drop-shadow(0 4px 20px rgba(0,0,0,0.3));
+}
+/* Ensure modal works on mobile */
+@media (max-width: 768px) {
+#evidenceModal {
+padding: 1rem !important;
+}
+#evidenceModal > div {
+max-width: 100% !important;
+max-height: 100% !important;
+border-radius: 16px !important;
+}
+}
+body {
+font-family: 'Inter', sans-serif;
+min-height: 100vh;
+overflow-x: hidden;
+position: relative;
+background:
+radial-gradient(ellipse 80% 50% at 20% 20%, rgba(30, 58, 138, 0.3) 0%, transparent 50%),
+radial-gradient(ellipse 60% 40% at 80% 80%, rgba(59, 130, 246, 0.25) 0%, transparent 50%),
+radial-gradient(ellipse 50% 30% at 40% 60%, rgba(99, 102, 241, 0.2) 0%, transparent 50%),
+linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
+color: var(--text-primary);
+}
+/* PIE CHART */
+.pie {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  margin: 1.5rem auto;
+  position: relative;
+
+  background: conic-gradient(
+    #3b82f6 var(--value),
+    rgba(255,255,255,0.08) 0
+  );
+
+  box-shadow:
+    0 0 30px rgba(59,130,246,0.3),
+    inset 0 0 20px rgba(0,0,0,0.5);
+}
+
+.pie::before {
+  content: '';
+  position: absolute;
+  inset: 18px;
+  background: #0f0f23;
+  border-radius: 50%;
+}
+
+.pie span {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-weight: 700;
+  font-size: 1.2rem;
+}
+
+.pie-label {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  margin-top: 0.5rem;
+}
+/* LIVE DATA NETWORK WALLPAPER */
+.data-network {
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+pointer-events: none;
+z-index: -1;
+}
+.data-node {
+position: absolute;
+border-radius: 50%;
+background: radial-gradient(circle, rgba(59,130,246,0.8) 0%, rgba(59,130,246,0.2) 70%, transparent 100%);
+box-shadow: 0 0 20px rgba(59,130,246,0.4);
+animation: dataPulse 3s ease-in-out infinite;
+}
+.data-node::before {
+content: '';
+position: absolute;
+top: 50%;
+left: 50%;
+width: 40%;
+height: 40%;
+background: rgba(255,255,255,0.6);
+border-radius: 50%;
+transform: translate(-50%, -50%);
+animation: dataInnerPulse 3s ease-in-out infinite reverse;
+}
+.data-stream {
+position: absolute;
+height: 1px;
+background: linear-gradient(90deg, transparent, rgba(59,130,246,0.8), transparent);
+box-shadow: 0 0 10px rgba(59,130,246,0.3);
+transform-origin: left center;
+animation: dataStream 4s linear infinite;
+}
+.data-point {
+position: absolute;
+border-radius: 50%;
+background: radial-gradient(circle, rgba(99,102,241,0.9) 0%, transparent 70%);
+animation: dataFloat 15s linear infinite;
+box-shadow: 0 0 15px rgba(99,102,241,0.5);
+}
+@keyframes dataPulse {
+0%, 100% { transform: scale(1); opacity: 0.7; }
+50% { transform: scale(1.4); opacity: 1; }
+}
+@keyframes dataInnerPulse {
+0%, 100% { transform: translate(-50%, -50%) scale(0.6); opacity: 0.5; }
+50% { transform: translate(-50%, -50%) scale(1.1); opacity: 1; }
+}
+@keyframes dataStream {
+0% { transform: scaleX(0); opacity: 0; }
+20% { opacity: 1; }
+80% { opacity: 1; }
+100% { transform: scaleX(2); opacity: 0; }
+}
+@keyframes dataFloat {
+0% {
+transform: translateY(100vh) translateX(0) rotate(0deg);
+opacity: 0;
+}
+10% { opacity: 1; }
+90% { opacity: 1; }
+100% {
+transform: translateY(-100vh) translateX(100px) rotate(360deg);
+opacity: 0;
+}
+}
+/* Navbar */
+nav {
+position: fixed;
+top: 0;
+width: 100%;
+z-index: 1000;
+background: rgba(15, 15, 35, 0.95);
+backdrop-filter: blur(30px);
+border-bottom: 1px solid var(--glass-border);
+padding: 1rem 0;
+}
+.nav-container {
+max-width: 1400px;
+margin: 0 auto;
+display: flex;
+justify-content: space-between;
+align-items: center;
+padding: 0 2rem;
+}
+.nav-logo {
+font-family: 'Space Grotesk', sans-serif;
+font-size: 1.5rem;
+font-weight: 700;
+background: var(--accent-gradient);
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
+background-clip: text;
+}
+.nav-links {
+display: flex;
+gap: 2rem;
+align-items: center;
+}
+.nav-links a {
+color: var(--text-secondary);
+text-decoration: none;
+font-weight: 500;
+padding: 0.75rem 1.5rem;
+border-radius: 12px;
+transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+position: relative;
+font-size: 0.95rem;
+letter-spacing: 0.3px;
+}
+.nav-links a::before {
+content: '';
+position: absolute;
+top: 0;
+left: 0;
+right: 0;
+bottom: 0;
+background: var(--accent-gradient);
+border-radius: 12px;
+transform: scaleX(0);
+transform-origin: left;
+transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+z-index: -1;
+}
+.nav-links a:hover::before,
+.nav-links a.active::before {
+transform: scaleX(1);
+}
+.nav-links a:hover,
+.nav-links a.active {
+color: #ffffff;
+transform: translateY(-1px);
+box-shadow: 0 10px 25px rgba(59, 130, 246, 0.3);
+}
+.hamburger {
+display: none;
+flex-direction: column;
+cursor: pointer;
+gap: 4px;
+}
+.hamburger span {
+width: 25px;
+height: 3px;
+background: var(--text-primary);
+border-radius: 3px;
+transition: all 0.3s ease;
+}
+/* Main Content */
+.main-content {
+min-height: 100vh;
+padding-top: 100px;
+padding-bottom: 4rem;
+max-width: 1400px;
+margin: 0 auto;
+padding: 0 2rem;
+}
+.hero-section {
+text-align: center;
+padding: 5rem 0;
+}
+.hero-title {
+font-family: 'Space Grotesk', sans-serif;
+font-size: clamp(2.8rem, 6vw, 5rem);
+font-weight: 800;
+background: var(--accent-gradient);
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
+background-clip: text;
+margin-bottom: 1.5rem;
+line-height: 1.1;
+}
+.hero-subtitle {
+font-size: 1.25rem;
+color: var(--text-muted);
+max-width: 700px;
+margin: 0 auto 3rem;
+line-height: 1.7;
+}
+/* Tabs */
+.tabs-container {
+display: flex;
+justify-content: center;
+flex-wrap: wrap;
+gap: 1rem;
+margin-bottom: 4rem;
+}
+.tab-btn {
+background: var(--glass-bg);
+backdrop-filter: blur(15px);
+border: 1px solid var(--glass-border);
+color: var(--text-secondary);
+padding: 1rem 2.5rem;
+font-size: 1rem;
+font-weight: 600;
+border-radius: 50px;
+cursor: pointer;
+transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+position: relative;
+overflow: hidden;
+}
+.tab-btn::before {
+content: '';
+position: absolute;
+top: 0;
+left: -100%;
+width: 100%;
+height: 100%;
+background: var(--accent-gradient);
+transition: left 0.6s;
+z-index: -1;
+}
+.tab-btn:hover::before,
+.tab-btn.active::before {
+left: 0;
+}
+.tab-btn:hover,
+.tab-btn.active {
+color: #ffffff;
+border-color: transparent;
+transform: translateY(-3px);
+box-shadow: var(--shadow-primary), var(--shadow-glow);
+}
+/* Tab Content */
+.tab-content {
+display: none;
+animation: fadeInUp 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.tab-content.active {
+display: block;
+}
+.tab-content h2 {
+font-family: 'Space Grotesk', sans-serif;
+font-size: 2.8rem;
+font-weight: 700;
+background: var(--primary-gradient);
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
+background-clip: text;
+margin-bottom: 2rem;
+text-align: center;
+}
+.tab-content p {
+color: var(--text-muted);
+font-size: 1.25rem;
+line-height: 1.8;
+margin-bottom: 4rem;
+text-align: center;
+max-width: 900px;
+margin-left: auto;
+margin-right: auto;
+}
+/* Evidence Grid */
+.evidence-grid {
+display: grid;
+grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+gap: 3rem;
+margin-bottom: 5rem;
+}
+.evidence-card {
+background: var(--glass-bg);
+backdrop-filter: blur(30px);
+border: 1px solid var(--glass-border);
+border-radius: 24px;
+padding: 3rem;
+text-align: center;
+transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+position: relative;
+overflow: hidden;
+cursor: pointer;
+}
+.evidence-card::before {
+content: '';
+position: absolute;
+top: 0;
+left: 0;
+right: 0;
+height: 4px;
+background: var(--accent-gradient);
+transform: scaleX(0);
+transition: transform 0.5s ease;
+border-radius: 24px 24px 0 0;
+}
+.evidence-card:hover::before {
+transform: scaleX(1);
+}
+.evidence-card:hover {
+transform: translateY(-10px);
+box-shadow: var(--shadow-primary), var(--shadow-glow);
+border-color: rgba(59, 130, 246, 0.3);
+}
+.evidence-image {
+width: 100%;
+height: 350px;
+object-fit: cover;
+border-radius: 20px;
+margin-bottom: 2rem;
+box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+.evidence-header {
+font-family: 'Space Grotesk', sans-serif;
+font-size: 1.5rem;
+font-weight: 700;
+background: var(--primary-gradient);
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
+background-clip: text;
+margin-bottom: 1rem;
+}
+.evidence-meta {
+color: var(--text-muted);
+font-size: 1rem;
+margin-bottom: 1.5rem;
+display: flex;
+align-items: center;
+justify-content: center;
+gap: 1rem;
+flex-wrap: wrap;
+}
+.evidence-meta i {
+color: var(--accent-gradient);
+}
+.evidence-folder-btn {
+background: var(--accent-gradient);
+color: #ffffff;
+border: none;
+padding: 1.5rem 3.5rem;
+font-size: 1.1rem;
+font-weight: 700;
+font-family: 'Space Grotesk', sans-serif;
+border-radius: 50px;
+cursor: pointer;
+transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+letter-spacing: 1px;
+text-transform: uppercase;
+position: relative;
+overflow: hidden;
+box-shadow: var(--shadow-primary);
+margin-top: 2.5rem;
+}
+.evidence-folder-btn::before {
+content: '';
+position: absolute;
+top: 0;
+left: -100%;
+width: 100%;
+height: 100%;
+background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+transition: left 0.7s;
+}
+.evidence-folder-btn:hover::before {
+left: 100%;
+}
+.evidence-folder-btn:hover {
+transform: translateY(-4px) scale(1.02);
+box-shadow: 0 30px 60px rgba(59, 130, 246, 0.4);
+}
+/* Modal */
+.evidence-modal {
+display: none;
+position: fixed;
+z-index: 3000;
+left: 0;
+top: 0;
+width: 100%;
+height: 100%;
+background: rgba(0, 0, 0, 0.85);
+backdrop-filter: blur(30px);
+}
+.modal-content {
+background: rgba(15, 15, 35, 0.98);
+backdrop-filter: blur(40px);
+margin: 2% auto;
+padding: 0;
+border-radius: 24px;
+width: 95%;
+max-width: 1600px;
+max-height: 90vh;
+position: relative;
+border: 1px solid rgba(59, 130, 246, 0.3);
+box-shadow: 0 40px 100px rgba(0, 0, 0, 0.6);
+animation: modalSlideIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+@keyframes modalSlideIn {
+from {
+opacity: 0;
+transform: translateY(-40px) scale(0.95);
+}
+to {
+opacity: 1;
+transform: translateY(0) scale(1);
+}
+}
+.modal-header {
+background: var(--primary-gradient);
+padding: 2.5rem 3rem;
+border-radius: 24px 24px 0 0;
+display: flex;
+justify-content: space-between;
+align-items: center;
+}
+.modal-title {
+font-family: 'Space Grotesk', sans-serif;
+font-size: 2rem;
+font-weight: 700;
+margin: 0
+}
+.close-modal {
+background: rgba(255, 255, 255, 0.15);
+border: none;
+color: white;
+font-size: 1.8rem;
+cursor: pointer;
+width: 50px;
+height: 50px;
+border-radius: 50%;
+display: flex;
+align-items: center;
+justify-content: center;
+transition: all 0.3s ease;
+}
+.close-modal:hover {
+background: rgba(255, 255, 255, 0.25);
+transform: rotate(90deg) scale(1.1);
+}
+.modal-body {
+max-height: 70vh;
+overflow-y: auto;
+padding: 3rem;
+padding-bottom: 1.5rem;
+}
+.modal-body::-webkit-scrollbar {
+width: 10px;
+}
+.modal-body::-webkit-scrollbar-track {
+background: rgba(30, 30, 60, 0.5);
+}
+.modal-body::-webkit-scrollbar-thumb {
+background: var(--accent-gradient);
+border-radius: 5px;
+}
+.modal-evidence-counter {
+color: #10b981;
+font-size: 1.4rem;
+font-weight: 600;
+margin-bottom: 2.5rem;
+text-align: center;
+font-family: 'Space Grotesk', sans-serif;
+}
+.modal-evidence-grid {
+display: grid;
+grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+gap: 2rem;
+}
+.modal-evidence-card {
+background: var(--glass-bg);
+backdrop-filter: blur(20px);
+border: 1px solid var(--glass-border);
+padding: 2rem;
+border-radius: 20px;
+text-align: center;
+transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+cursor: pointer;
+position: relative;
+overflow: hidden;
+}
+.modal-evidence-card::before {
+content: '';
+position: absolute;
+top: 0;
+left: 0;
+right: 0;
+height: 3px;
+background: var(--accent-gradient);
+transform: scaleX(0);
+transition: transform 0.4s ease;
+}
+.modal-evidence-card:hover::before {
+transform: scaleX(1);
+}
+.modal-evidence-card:hover {
+transform: translateY(-8px) scale(1.02);
+box-shadow: var(--shadow-primary), var(--shadow-glow);
+border-color: rgba(59, 130, 246, 0.4);
+}
+.evidence-preview {
+  width: 100%;
+  height: 240px;
+  background-size: cover;
+  background-position: center;
+  border-radius: 16px;
+  margin-bottom: 1.5rem;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.evidence-preview::after {
+content: '';
+position:absolute;
+top: 0;
+left: 0;
+right: 0;
+bottom: 0;
+background: rgba(0,0,0,0.4);
+transition: all 0.3s ease;
+}
+.evidence-preview i {
+color: white;
+font-size: 3.5rem;
+z-index: 1;
+transition: all 0.3s ease;
+}
+.modal-evidence-card h4 {
+color: var(--text-primary);
+margin: 0 0 1rem 0;
+font-size: 1.25rem;
+font-weight: 600;
+}
+.modal-evidence-card p {
+color: var(--text-muted);
+font-size: 0.95rem;
+margin: 0;
+line-height: 1.6;
+}
+/* Footer */
+footer {
+background: rgba(15, 15, 35, 0.95);
+backdrop-filter: blur(30px);
+text-align: center;
+padding: 3rem;
+color: var(--text-muted);
+border-top: 1px solid var(--glass-border);
+font-size: 1rem;
+}
+/* Animations */
+@keyframes fadeInUp {
+from {
+opacity: 0;
+transform: translateY(40px);
+}
+to {
+opacity: 1;
+transform: translateY(0);
+}
+}
+/* Responsive Design */
+@media (max-width: 1024px) {
+.evidence-grid {
+grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+gap: 2.5rem;
+}
+}
+@media (max-width: 768px) {
+.nav-links {
+display: none;
+position: absolute;
+top: 100%;
+left: 0;
+width: 100%;
+background: rgba(15, 15, 35, 0.98);
+backdrop-filter: blur(30px);
+flex-direction: column;
+padding: 1.5rem 0;
+gap: 0;
+}
+.nav-links.active {
+display: flex;
+}
+.nav-links a {
+padding: 1.2rem 2rem;
+width: 100%;
+text-align: center;
+}
+.hamburger {
+display: flex;
+}
+.main-content {
+padding: 0 1.5rem;
+padding-top: 90px;
+}
+.modal-evidence-grid {
+grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+gap: 1.5rem;
+}
+.evidence-image {
+height: 300px;
+}
+}
+@media (max-width: 480px) {
+.hero-title {
+font-size: 2.8rem;
+}
+.evidence-card {
+padding: 2.5rem 1.5rem;
+}
+.modal-evidence-grid {
+grid-template-columns: 1fr;
+}
+}
+</style>
+</head>
+<body>
+<!-- PROFESSIONAL LIVE DATA NETWORK WALLPAPER -->
+<div class="data-network" id="dataNetwork"></div>
+<nav>
+  <div class="nav-container">
+    <div class="nav-logo">Digital Bridge</div>
+    <div class="hamburger" id="hamburger">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+    <div class="nav-links" id="navLinks">
+      <a href="index.html">Home</a>
+      <a href="secondary.html">Secondary Research</a>
+      <a href="primary.html">Primary Research</a>
+      <a href="action.html" class="active">Evidence of Action</a>
+      <a href="about.html">About Us</a>  
+    </div>
+  </div>
+</nav>
+<div class="main-content">
+  <section class="hero-section">
+    <h1 class="hero-title">Evidence of Action</h1>
+    <p class="hero-subtitle">
+      Comprehensive documentation of our community outreach initiatives, 
+      workshops, and survey campaigns bridging the digital divide for senior citizens.
+    </p>
+  </section>
+  <div class="tabs-container">
+    <button class="tab-btn active" onclick="showTab('campaign')">
+      <i class="fas fa-bullhorn"></i> Campaign
+    </button>
+    <button class="tab-btn" onclick="showTab('workshops')">
+      <i class="fas fa-laptop"></i> Workshops
+    </button>
+    <button class="tab-btn" onclick="showTab('surveys')">
+      <i class="fas fa-clipboard-list"></i> Surveys
+    </button>
+  </div>
+  <!-- Campaign Tab -->
+  <div class="tab-content active" id="campaign">
+    <h2>Community Awareness Campaign</h2>
+    <p>
+      Strategic poster campaign across parks, houses, and shops to raise awareness 
+      about digital literacy workshops and our Digital Bridge initiative.
+    </p>
+    <div class="evidence-grid">
+      <div class="evidence-card" onclick="openEvidenceModal('campaign-poster1')">
+        <img src="Evidence/Campaign/Poster_1.PNG" alt="Digital Literacy Workshop Poster" class="evidence-image">
+        <div class="evidence-header">UVAS Digital Literacy Workshop</div>
+        <div class="evidence-meta">
+          <span><i class="fas fa-bullhorn"></i> Poster Design</span>
+        </div>
+      </div>
+      <div class="evidence-card" onclick="openEvidenceModal('campaign-poster2')">
+        <img src="Evidence/Campaign/Poster_2.PNG" alt="Digital Bridge Group Poster" class="evidence-image">
+        <div class="evidence-header">Digital Bridge Initiative</div>
+        <div class="evidence-meta">
+          <span><i class="fas fa-users"></i> Group Introduction</span>
+          <span><i class="fas fa-share-alt"></i> Social Media Links</span>
+        </div>
+      </div>
+    </div>
+    <div style="text-align: center; margin: 4rem 0;">
+      <button class="evidence-folder-btn" onclick="openEvidenceModal('campaign-posting')">
+        <i class="fas fa-camera"></i> View Poster Placement Evidence (7 Photos)
+      </button>
+    </div>
+  </div>
+  <!-- Workshops Tab -->
+  <div class="tab-content" id="workshops">
+    <h2>Smart Action: Digital Literacy Workshops</h2>
+    <p>
+      Conducted 3 targeted workshops teaching WhatsApp, ChatGPT, phishing awareness, 
+      and mobile usage to senior citizens at UVAS and public areas.
+    </p>
+    <div class="evidence-grid">
+      <div class="evidence-card" onclick="openEvidenceModal('session1-1')">
+        <img src="Evidence/Session 1/1.JPG" alt="Session 1 Attendants" class="evidence-image">
+        <div class="evidence-header">Session 1: Attendants</div>
+        <div class="evidence-meta">
+          <span><i class="fas fa-users"></i> 9 Participants</span>
+          <span><i class="fas fa-university"></i> UVAS Lahore</span>
+        </div>
+      </div>
+      <div class="evidence-card" onclick="openEvidenceModal('session1-2')">
+        <img src="Evidence/Session 1/2.JPG" alt="Sarim Sajid Explaining" class="evidence-image">
+        <div class="evidence-header">Sarim Sajid Explaining</div>
+        <div class="evidence-meta">
+          <span><i class="fas fa-user-tie"></i> Team Lead</span>
+        </div>
+      </div>
+      <div class="evidence-card" onclick="openEvidenceModal('session1-3')">
+        <img src="Evidence/Session 1/3.JPG" alt="Ammar Explaining" class="evidence-image">
+        <div class="evidence-header">Ammar Teaching</div>
+        <div class="evidence-meta">
+          <span><i class="fas fa-chalkboard-teacher"></i> Digital Tools</span>
+        </div>
+      </div>
+      <div class="evidence-card" onclick="openEvidenceModal('session1-4')">
+        <img src="Evidence/Session 1/4.JPG" alt="Workshop Board" class="evidence-image">
+        <div class="evidence-header">Digital Literacy Board</div>
+        <div class="evidence-meta">
+          <span><i class="fas fa-clipboard"></i> ChatGPT, Google, Phishing</span>
+        </div>
+      </div>
+    </div>
+    <div class="evidence-grid">
+      <div class="evidence-card" onclick="openEvidenceModal('session2-1')">
+        <img src="Evidence/Session 2/1.JPG" alt="Session 2 Attendants" class="evidence-image">
+        <div class="evidence-header">Session 2: 7 Participants</div>
+        <div class="evidence-meta">
+          <span><i class="fas fa-users"></i> UVAS Workshop</span>
+        </div>
+      </div>
+      <div class="evidence-card" onclick="openEvidenceModal('session2-2')">
+        <img src="Evidence/Session 2/2.JPG" alt="Sarim with Board" class="evidence-image">
+        <div class="evidence-header">Sarim with Teaching Board</div>
+        <div class="evidence-meta">
+          <span><i class="fas fa-user-tie"></i> Team Lead</span>
+        </div>
+      </div>
+      <div class="evidence-card" onclick="openEvidenceModal('session2-6')">
+        <img src="Evidence/Session 2/6.JPG" alt="Full Team Photo" class="evidence-image">
+        <div class="evidence-header">Full Team Session</div>
+        <div class="evidence-meta">
+          <span><i class="fas fa-users-cog"></i> Complete Team</span>
+        </div>
+      </div>
+      <div class="evidence-card" onclick="openEvidenceModal('session2-7')">
+        <img src="Evidence/Session 2/7.JPG" alt="Participants Using Devices" class="evidence-image">
+        <div class="evidence-header">Hands-on Practice</div>
+        <div class="evidence-meta">
+          <span><i class="fas fa-mobile-alt"></i> Device Usage</span>
+        </div>
+      </div>
+    </div>
+    <div class="evidence-grid">
+      <div class="evidence-card" onclick="openEvidenceModal('session3-1')">
+        <img src="Evidence/Session 3/1.JPG" alt="Sarim Teaching Shopkeeper" class="evidence-image">
+        <div class="evidence-header">Sarim Teaching Shopkeeper</div>
+        <div class="evidence-meta">
+          <span><i class="fas fa-store"></i> Onion Seller</span>
+        </div>
+      </div>
+      <div class="evidence-card" onclick="openEvidenceModal('session3-2')">
+        <img src="Evidence/Session 3/2.JPG" alt="Taha Teaching Cylinder Seller" class="evidence-image">
+        <div class="evidence-header">Taha Teaching Shopkeeper</div>
+        <div class="evidence-meta">
+          <span><i class="fas fa-gas-pump"></i> Cylinder Seller</span>
+        </div>
+      </div>
+      <div class="evidence-card" onclick="openEvidenceModal('session3-3')">
+               <img src="Evidence/Session 3/3.JPG" alt="Ammar Street Teaching" class="evidence-image">
+        <div class="evidence-header">Ammar Street Teaching</div>
+        <div class="evidence-meta">
+          <span><i class="fas fa-street-view"></i> Elder Citizen</span>
+        </div>
+      </div>
+      <div class="evidence-card" onclick="openEvidenceModal('session3-4')">
+        <img src="Evidence/Session 3/4.JPG" alt="Atique Teaching Security Guard" class="evidence-image">
+        <div class="evidence-header">Atique Teaching Security</div>
+        <div class="evidence-meta">
+          <span><i class="fas fa-shield-alt"></i> Security Guard</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Surveys Tab - EXPANDED -->
+  <div class="tab-content" id="surveys">
+    <h2>Comprehensive Survey Evidence</h2>
+    <p>
+      Complete survey documentation including pre-intervention baseline, post-intervention 
+      impact assessment, and participant feedback surveys conducted at Education University, 
+      Parks, and UVAS Lahore.
+    </p>
+    
+    <!-- Pre-Session Surveys (Before) -->
+    <div class="evidence-grid">
+      <div class="evidence-card" onclick="openEvidenceModal('surveys-before')">
+        <img src="Evidence/Surveys/before/survey_1/1.png" alt="Pre-Session Survey" class="evidence-image">
+        <div class="evidence-header">Pre-Session Surveys</div>
+        <div class="evidence-meta">
+          <span><i class="fas fa-clock"></i> Baseline Assessment</span>
+          <span><i class="fas fa-file-alt"></i> 16 Forms</span>
+        </div>
+      </div>
+      <div class="evidence-card" onclick="openEvidenceModal('edu-1')">
+        <img src="Evidence/Surveys/Education University/1.jpg" alt="Education University Survey" class="evidence-image">
+        <div class="evidence-header">Education University</div>
+        <div class="evidence-meta">
+          <span><i class="fas fa-university"></i> Library Setting</span>
+          <span><i class="fas fa-pen"></i> Students Filling Forms</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Post-Session Surveys (After) -->
+    <div class="evidence-grid">
+      <div class="evidence-card" onclick="openEvidenceModal('surveys-after')">
+        <img src="Evidence/Surveys/after/survey_1/1.png" alt="Post-Session Survey" class="evidence-image">
+        <div class="evidence-header">Post-Session Surveys</div>
+        <div class="evidence-meta">
+          <span><i class="fas fa-check-circle"></i> Impact Assessment</span>
+          <span><i class="fas fa-file-alt"></i> 16 Forms</span>
+        </div>
+      </div>
+      <div class="evidence-card" onclick="openEvidenceModal('park-1')">
+        <img src="Evidence/Surveys/Park/1.jpg" alt="Park Survey" class="evidence-image">
+        <div class="evidence-header">Park Survey Session</div>
+        <div class="evidence-meta">
+          <span><i class="fas fa-tree"></i> Outdoor Collection</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Feedback Surveys -->
+    <div class="evidence-grid">
+      <div class="evidence-card" onclick="openEvidenceModal('surveys-feedback')">
+        <img src="Evidence/Surveys/feedback/1.png" alt="Feedback Survey 1" class="evidence-image">
+        <div class="evidence-header">Participant Feedback</div>
+        <div class="evidence-meta">
+          <span><i class="fas fa-comment-dots"></i> Post-Workshop</span>
+          <span><i class="fas fa-file-alt"></i> 15 Forms</span>
+        </div>
+      </div>
+      <div class="evidence-card" onclick="openEvidenceModal('uvas-1')">
+        <img src="Evidence/Surveys/Uvas/1.jpg" alt="UVAS Survey" class="evidence-image">
+        <div class="evidence-header">UVAS Classroom Survey</div>
+        <div class="evidence-meta">
+          <span><i class="fas fa-chair"></i> Classroom Setting</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Summary Buttons -->
+    <div style="text-align: center; margin: 4rem 0;">
+      <button class="evidence-folder-btn" onclick="openEvidenceModal('surveys-before')">
+        <i class="fas fa-file-alt"></i> View All Pre-Session Surveys (16 Forms)
+      </button>
+      <br><br>
+      <button class="evidence-folder-btn" onclick="openEvidenceModal('surveys-after')" style="margin-right: 1rem;">
+        <i class="fas fa-chart-line"></i> View All Post-Session Surveys (16 Forms)
+      </button>
+      <button class="evidence-folder-btn" onclick="openEvidenceModal('surveys-feedback')">
+        <i class="fas fa-star"></i> View All Feedback Surveys (15 Forms)
+      </button>
+    </div>
+  </div>
+</div>
+<!-- Evidence Modal -->
+<div id="evidenceModal" class="evidence-modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2 class="modal-title" id="modalEvidenceTitle">
+        <i class="fas fa-images"></i> Evidence Gallery
+      </h2>
+      <button class="close-modal" onclick="closeEvidenceModal()">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-evidence-counter" id="modalEvidenceCounter">
+        Initializing gallery...
+      </div>
+      <div class="modal-evidence-grid" id="modalEvidenceGrid">
+        <!-- Dynamic content -->
+      </div>
+    </div>
+  </div>
+</div>
+<footer>
+  <p><i class="fas fa-copyright"></i> 2025 Digital Bridge Project | Evidence of Action Documentation</p>
+</footer>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  // Mobile menu toggle
+  const hamburger = document.getElementById('hamburger');
+  const navLinks = document.getElementById('navLinks');
+  hamburger.addEventListener('click', () => {
+    navLinks.classList.toggle('active');
+    hamburger.classList.toggle('active');
+  });
+  // Close mobile menu on link click
+  document.querySelectorAll('.nav-links a').forEach(link => {
+    link.addEventListener('click', () => {
+      navLinks.classList.remove('active');
+      hamburger.classList.remove('active');
+    });
+  });
+
+  // Initialize PROFESSIONAL LIVE WALLPAPER
+  initProfessionalWallpaper();
+});
+
+// 🔥 PROFESSIONAL LIVE DATA NETWORK WALLPAPER
+function initProfessionalWallpaper() {
+  const container = document.getElementById('dataNetwork');
+
+  // Create Data Nodes
+    for (let i = 0; i < 30; i++) {
+    const node = document.createElement('div');
+    node.className = 'data-node';
+    const size = Math.random() * 10 + 4;
+    node.style.width = size + 'px';
+    node.style.height = size + 'px';
+    node.style.left = Math.random() * 100 + '%';
+    node.style.top = Math.random() * 100 + '%';
+    node.style.animationDelay = Math.random() * 3 + 's';
+    node.style.animationDuration = (2.5 + Math.random() * 2) + 's';
+    container.appendChild(node);
+  }
+
+  // Create Data Streams
+  for (let i = 0; i < 20; i++) {
+    const stream = document.createElement('div');
+    stream.className = 'data-stream';
+    stream.style.left = Math.random() * 100 + '%';
+    stream.style.top = Math.random() * 100 + '%';
+    stream.style.width = (Math.random() * 250 + 120) + 'px';
+    stream.style.animationDelay = Math.random() * 4 + 's';
+    stream.style.animationDuration = (3 + Math.random() * 3) + 's';
+    container.appendChild(stream);
+  }
+
+  // Create Floating Data Points
+  for (let i = 0; i < 25; i++) {
+    const point = document.createElement('div');
+    point.className = 'data-point';
+    const size = Math.random() * 5 + 2;
+    point.style.width = size + 'px';
+    point.style.height = size + 'px';
+    point.style.left = Math.random() * 100 + '%';
+    point.style.animationDelay = Math.random() * -15 + 's';
+    point.style.animationDuration = (12 + Math.random() * 8) + 's';
+    container.appendChild(point);
+  }
+}
+
+// Tab System
+function showTab(tabId) {
+  document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+  document.querySelector(`[onclick="showTab('${tabId}')"]`).classList.add('active');
+
+  document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+  document.getElementById(tabId).classList.add('active');
+}
+
+// Evidence Modal Controls
+function openEvidenceModal(type) {
+  document.getElementById('evidenceModal').style.display = 'block';
+  document.body.style.overflow = 'hidden';
+  loadEvidenceGallery(type);
+}
+
+function closeEvidenceModal() {
+  document.getElementById('evidenceModal').style.display = 'none';
+  document.body.style.overflow = 'auto';
+}
+
+// Evidence Galleries Data - EXPANDED WITH NEW SURVEYS
+const evidenceGalleries = {
+  // Existing Campaign Galleries
+  'campaign-poster1': {
+    title: 'UVAS Digital Literacy Workshop Poster',
+    images: [
+      { src: 'Evidence/Campaign/Poster_1.PNG', desc: 'Poster promoting Digital Literacy Workshops at UVAS for senior citizens' }
+    ]
+  },
+  'campaign-poster2': {
+    title: 'Digital Bridge Group Introduction',
+    images: [
+      { src: 'Evidence/Campaign/Poster_2.PNG', desc: 'Digital Bridge group description with aims, Instagram, Facebook, and website links' }
+    ]
+  },
+  'campaign-posting': {
+    title: 'Poster Placement Evidence',
+    images: [
+      { src: 'Evidence/Campaign/1.JPG', desc: 'Team placing posters in community areas' },
+      { src: 'Evidence/Campaign/2.JPG', desc: 'Poster installation at park walls' },
+      { src: 'Evidence/Campaign/3.JPG', desc: 'Strategic poster placement in high-traffic areas' },
+      { src: 'Evidence/Campaign/4.JPG', desc: 'Community poster campaign documentation' },
+      { src: 'Evidence/Campaign/5.JPG', desc: 'Pasting posters on shop walls' },
+      { src: 'Evidence/Campaign/6.JPG', desc: 'Public awareness campaign evidence' },
+      { src: 'Evidence/Campaign/7.JPG', desc: 'Final poster placement verification' }
+    ]
+  },
+  
+  // Existing Session Galleries
+  'session1-1': { title: 'Session 1 - Attendants', images: [{ src: 'Evidence/Session 1/1.JPG', desc: '9 senior citizens attending first UVAS workshop' }] },
+  'session1-2': { title: 'Sarim Sajid Explaining', images: [{ src: 'Evidence/Session 1/2.JPG', desc: 'Team lead Sarim Sajid explaining digital concepts' }] },
+  'session1-3': { title: 'Ammar Explaining', images: [{ src: 'Evidence/Session 1/3.JPG', desc: 'Ammar providing detailed digital literacy instruction' }] },
+  'session1-4': { title: 'Workshop Board Content', images: [{ src: 'Evidence/Session 1/4.JPG', desc: 'Board showing ChatGPT, Google, and phishing information' }] },
+  'session2-1': { title: 'Session 2 Attendants', images: [{ src: 'Evidence/Session 2/1.JPG', desc: '7 participants in second UVAS workshop' }] },
+  'session2-2': { title: 'Sarim with Teaching Board', images: [{ src: 'Evidence/Session 2/2.JPG', desc: 'Sarim Sajid explaining using the teaching board' }] },
+  'session2-6': { title: 'Full Team Photo', images: [{ src: 'Evidence/Session 2/6.JPG', desc: 'Entire Digital Bridge team captured during session' }] },
+  'session2-7': { title: 'Hands-on Device Practice', images: [{ src: 'Evidence/Session 2/7.JPG', desc: 'Participants actively using their mobile devices' }] },
+  'session3-1': { title: 'Sarim Teaching Shopkeeper', images: [{ src: 'Evidence/Session 3/1.JPG', desc: 'Sarim teaching old shopkeeper (cutting onions) smartphone usage' }] },
+  'session3-2': { title: 'Taha Teaching Cylinder Seller', images: [{ src: 'Evidence/Session 3/2.JPG', desc: 'Taha Talib explaining to cylinder shopkeeper' }] },
+  'session3-3': { title: 'Ammar Street Teaching', images: [{ src: 'Evidence/Session 3/3.JPG', desc: 'Ammar teaching elder citizen on the street' }] },
+  'session3-4': { title: 'Atique Teaching Security Guard', images: [{ src: 'Evidence/Session 3/4.JPG', desc: 'Atique Ahmed teaching security guard mobile usage' }] },
+  
+  // Existing Location Surveys
+  'edu-1': {
+    title: 'Education University Survey',
+    images: [
+      { src: 'Evidence/Surveys/Education University/1.jpg', desc: 'Students filling survey forms in university library' },
+      { src: 'Evidence/Surveys/Education University/2.jpg', desc: 'Education University library survey collection' }
+    ]
+  },
+  'park-1': {
+    title: 'Park Survey Collection',
+    images: [
+      { src: 'Evidence/Surveys/Park/1.jpg', desc: 'Students completing surveys in park setting' },
+      { src: 'Evidence/Surveys/Park/2.jpg', desc: 'Park survey session documentation' },
+      { src: 'Evidence/Surveys/Park/3.jpg', desc: 'Outdoor survey collection evidence' },
+      { src: 'Evidence/Surveys/Park/4.jpg', desc: 'Final park survey completion' }
+    ]
+  },
+  'uvas-1': {
+    title: 'UVAS Survey Session',
+    images: [
+      { src: 'Evidence/Surveys/Uvas/1.jpg', desc: 'Students filling forms in UVAS classroom' },
+      { src: 'Evidence/Surveys/Uvas/2.jpg', desc: 'UVAS classroom survey collection' },
+      { src: 'Evidence/Surveys/Uvas/3.jpg', desc: 'Final UVAS survey documentation' }
+    ]
+  },
+
+  // NEW PRE-SESSION SURVEYS (16 forms)
+  'surveys-before': {
+    title: 'Pre-Session Baseline Surveys (Before Intervention)',
+    images: []
+  },
+
+  // NEW POST-SESSION SURVEYS (16 forms)
+  'surveys-after': {
+    title: 'Post-Session Impact Assessment Surveys (After Intervention)',
+    images: []
+  },
+
+  // NEW FEEDBACK SURVEYS (15 forms)
+  'surveys-feedback': {
+    title: 'Participant Feedback & Satisfaction Surveys',
+    images: []
+  }
+};
+
+// Dynamically populate survey galleries
+function populateSurveyGalleries() {
+
+  // Pre-session surveys (16 folders)
+  for (let i = 1; i <= 16; i++) {
+
+    let maxFiles = (i <= 12) ? 3 : 2;
+
+    for (let j = 1; j <= maxFiles; j++) {
+      evidenceGalleries['surveys-before'].images.push({
+        src: `Evidence/Surveys/before/survey_${i}/${j}.png`,
+        desc: `Pre-session survey ${i} - Page ${j}`
+      });
+    }
+  }
+
+  // Post-session surveys (16 folders, each with 2 files)
+  for (let i = 1; i <= 16; i++) {
+
+    for (let j = 1; j <= 2; j++) {
+      evidenceGalleries['surveys-after'].images.push({
+        src: `Evidence/Surveys/after/survey_${i}/${j}.png`,
+        desc: `Post-session survey ${i} - Page ${j}`
+      });
+    }
+  }
+
+  // Feedback surveys (leave your original, it's fine)
+  for (let i = 1; i <= 15; i++) {
+    evidenceGalleries['surveys-feedback'].images.push({
+      src: `Evidence/Surveys/feedback/${i}.png`,
+      desc: `Feedback survey form #${i}`
+    });
+  }
+}
+
+function loadEvidenceGallery(type) {
+  const gallery = evidenceGalleries[type];
+  const grid = document.getElementById('modalEvidenceGrid');
+  const counter = document.getElementById('modalEvidenceCounter');
+  const title = document.getElementById('modalEvidenceTitle');
+
+  title.innerHTML = `<i class="fas fa-images"></i> ${gallery.title}`;
+  grid.innerHTML = '';
+  counter.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Loading gallery...';
+
+  gallery.images.forEach((image, index) => {
+    setTimeout(() => {
+      const card = createEvidenceCard(image.src, image.desc, index + 1);
+      grid.appendChild(card);
+      counter.innerHTML = `<i class="fas fa-check-circle"></i> Loaded ${index + 1}/${gallery.images.length}`;
+
+      if (index === gallery.images.length - 1) {
+        setTimeout(() => {
+          counter.innerHTML = `<i class="fas fa-database"></i> ✅ Gallery ready! (${gallery.images.length} photos)`;
+          counter.style.color = '#10b981';
+        }, 400);
+      }
+    }, index * 100);
+  });
+}
+
+function createEvidenceCard(src, desc, number) {
+  const card = document.createElement('div');
+  card.className = 'modal-evidence-card';
+  card.onclick = function(e) {
+    if (e.target.tagName !== 'IMG') window.open(src, '_blank');
+  };
+
+  card.innerHTML = `
+    <div class="evidence-preview" style="background-image: url('${src}')">
+      <i class="fas fa-search-plus"></i>
+    </div>
+    <h4>Photo #${String(number).padStart(2, '0')}</h4>
+    <p>${desc}</p>
+  `;
+
+  return card;
+}
+
+// Initialize survey galleries on load
+populateSurveyGalleries();
+
+// Global event listeners
+window.onclick = function(event) {
+  const modal = document.getElementById('evidenceModal');
+  if (event.target === modal) {
+    closeEvidenceModal();
+  }
+};
+
+document.addEventListener('keydown', function(event) {
+  if (event.key === 'Escape') {
+    closeEvidenceModal();
+  }
+});
+
+// Enhanced scroll parallax for wallpaper
+document.addEventListener('scroll', () => {
+  const scrolled = window.pageYOffset;
+  const parallax = document.querySelector('.data-network');
+  const speed = scrolled * 0.15;
+
+  if (parallax) {
+    parallax.style.transform = `translateY(${speed}px)`;
+  }
+});
+
+// Performance optimization: Intersection Observer
+const observerOptions = {
+  threshold: 0.1,
+  rootMargin: '0px 0px -100px 0px'
+};
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.style.opacity = '1';
+      entry.target.style.transform = 'translateY(0)';
+    }
+  });
+}, observerOptions);
+
+// Observe evidence cards
+document.querySelectorAll('.evidence-card').forEach((card, index) => {
+  card.style.opacity = '0';
+  card.style.transform = 'translateY(50px)';
+  card.style.transition = `all 1s cubic-bezier(0.4, 0, 0.2, 1) ${index * 0.15}s`;
+  observer.observe(card);
+});
+
+// Preload and entrance animation
+window.addEventListener('load', () => {
+  document.body.classList.add('loaded');
+  setTimeout(() => {
+    document.querySelector('.data-network').style.opacity = '1';
+  }, 1000);
+});
+</script>
+</body>
+</html>

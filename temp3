@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Digital Bridge - Home</title>
+<link rel="icon" type="image/png" href="logo.png">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+:root {
+--primary-gradient: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+--secondary-gradient: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+--accent-gradient: linear-gradient(135deg, #3b82f6 0%, #60a5fa 100%);
+--glass-bg: rgba(255, 255, 255, 0.06);
+--glass-border: rgba(255, 255, 255, 0.08);
+--text-primary: #ffffff;
+--text-secondary: rgba(255, 255, 255, 0.95);
+--text-muted: rgba(255, 255, 255, 0.85);
+--text-vibrant: rgba(255, 255, 255, 0.98);
+--shadow-primary: 0 25px 50px rgba(0, 0, 0, 0.25);
+--shadow-glow: 0 0 30px rgba(59, 130, 246, 0.2);
+}
+/* LIVE DATA NETWORK WALLPAPER */
+.data-network {
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+pointer-events: none;
+z-index: -1;
+}
+.data-node {
+position: absolute;
+border-radius: 50%;
+background: radial-gradient(circle, rgba(59,130,246,0.8) 0%, rgba(59,130,246,0.2) 70%, transparent 100%);
+box-shadow: 0 0 20px rgba(59,130,246,0.4);
+animation: dataPulse 3s ease-in-out infinite;
+}
+.data-node::before {
+content: '';
+position: absolute;
+top: 50%;
+left: 50%;
+width: 40%;
+height: 40%;
+background: rgba(255,255,255,0.6);
+border-radius: 50%;
+transform: translate(-50%, -50%);
+animation: dataInnerPulse 3s ease-in-out infinite reverse;
+}
+.data-stream {
+position: absolute;
+height: 1px;
+background: linear-gradient(90deg, transparent, rgba(59,130,246,0.8), transparent);
+box-shadow: 0 0 10px rgba(59,130,246,0.3);
+transform-origin: left center;
+animation: dataStream 4s linear infinite;
+}
+.data-point {
+position: absolute;
+border-radius: 50%;
+background: radial-gradient(circle, rgba(99,102,241,0.9) 0%, transparent 70%);
+animation: dataFloat 15s linear infinite;
+box-shadow: 0 0 15px rgba(99,102,241,0.5);
+}
+/* ANIMATIONS */
+@keyframes dataPulse {
+0%, 100% { transform: scale(1); opacity: 0.7; }
+50% { transform: scale(1.4); opacity: 1; }
+}
+@keyframes dataInnerPulse {
+0%, 100% { transform: translate(-50%, -50%) scale(0.6); opacity: 0.5; }
+50% { transform: translate(-50%, -50%) scale(1.1); opacity: 1; }
+}
+@keyframes dataStream {
+0% { transform: scaleX(0); opacity: 0; }
+20% { opacity: 1; }
+80% { opacity: 1; }
+100% { transform: scaleX(2); opacity: 0; }
+}
+@keyframes dataFloat {
+0% {
+transform: translateY(100vh) translateX(0) rotate(0deg);
+opacity: 0;
+}
+10% { opacity: 1; }
+90% { opacity: 1; }
+100% {
+transform: translateY(-100vh) translateX(100px) rotate(360deg);
+opacity: 0;
+}
+}
+/* PROFESSIONAL CORPORATE GRADIENT */
+body {
+font-family: 'Inter', sans-serif;
+min-height: 100vh;
+overflow-x: hidden;
+position: relative;
+background:
+radial-gradient(ellipse 80% 50% at 20% 20%, rgba(30, 58, 138, 0.3) 0%, transparent 50%),
+radial-gradient(ellipse 60% 40% at 80% 80%, rgba(59, 130, 246, 0.25) 0%, transparent 50%),
+radial-gradient(ellipse 50% 30% at 40% 60%, rgba(99, 102, 241, 0.2) 0%, transparent 50%),
+linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
+color: var(--text-primary);
+}
+/* Navbar */
+nav {
+position: fixed;
+top: 0;
+width: 100%;
+z-index: 1000;
+background: rgba(15, 15, 35, 0.95);
+backdrop-filter: blur(30px);
+border-bottom: 1px solid var(--glass-border);
+padding: 1rem 0;
+}
+.nav-container {
+max-width: 1400px;
+margin: 0 auto;
+display: flex;
+justify-content: space-between;
+align-items: center;
+padding: 0 2rem;
+}
+.nav-logo {
+font-family: 'Space Grotesk', sans-serif;
+font-size: 1.5rem;
+font-weight: 700;
+background: var(--accent-gradient);
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
+background-clip: text;
+}
+.nav-links {
+display: flex;
+gap: 2rem;
+align-items: center;
+}
+.nav-links a {
+color: var(--text-secondary);
+text-decoration: none;
+font-weight: 500;
+padding: 0.75rem 1.5rem;
+border-radius: 12px;
+transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+position: relative;
+font-size: 0.95rem;
+letter-spacing: 0.3px;
+}
+.nav-links a::before {
+content: '';
+position: absolute;
+top: 0;
+left: 0;
+right: 0;
+bottom: 0;
+background: var(--accent-gradient);
+border-radius: 12px;
+transform: scaleX(0);
+transform-origin: left;
+transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+z-index: -1;
+}
+.nav-links a:hover::before,
+.nav-links a.active::before {
+transform: scaleX(1);
+}
+.nav-links a:hover,
+.nav-links a.active {
+color: #ffffff;
+transform: translateY(-1px);
+box-shadow: 0 10px 25px rgba(59, 130, 246, 0.3);
+}
+.hamburger {
+display: none;
+flex-direction: column;
+cursor: pointer;
+gap: 4px;
+}
+.hamburger span {
+width: 25px;
+height: 3px;
+background: var(--text-primary);
+border-radius: 3px;
+transition: all 0.3s ease;
+}
+.main-content {
+  min-height: 100vh;
+  padding-top: 105px !important;
+  padding-bottom: 4rem;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.hero-section {
+  text-align: center;
+  padding: 4rem 0 1.5rem 0 !important;
+}
+.hero-title {
+font-family: 'Space Grotesk', sans-serif;
+font-size: clamp(2.8rem, 6vw, 5rem);
+font-weight: 800;
+background: var(--accent-gradient);
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
+background-clip: text;
+margin-bottom: 1.5rem;
+line-height: 1.1;
+}
+.hero-subtitle {
+font-size: 1.25rem;
+color: var(--text-muted);
+max-width: 700px;
+margin: 0 auto 3rem;
+line-height: 1.7;
+}
+
+/* Project Info Cards */
+.project-info {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 2rem;
+  margin: 4rem 0;
+}
+
+.info-card {
+  background: var(--glass-bg);
+  backdrop-filter: blur(30px);
+  border: 1px solid var(--glass-border);
+  border-radius: 24px;
+  padding: 3rem;
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  text-align: center;
+}
+
+.info-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: var(--accent-gradient);
+  transform: scaleX(0);
+  transition: transform 0.5s ease;
+  border-radius: 24px 24px 0 0;
+}
+
+.info-card:hover::before {
+  transform: scaleX(1);
+}
+
+.info-card:hover {
+  transform: translateY(-10px);
+  box-shadow: var(--shadow-primary), var(--shadow-glow);
+  border-color: rgba(59, 130, 246, 0.3);
+}
+
+.info-icon {
+  font-size: 4rem;
+  background: var(--accent-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 1.5rem;
+  display: block;
+}
+
+.info-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1.8rem;
+  font-weight: 700;
+  background: var(--primary-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 1.5rem;
+}
+
+.info-text {
+  color: var(--text-vibrant);
+  font-size: 1.15rem;
+  line-height: 1.8;
+}
+
+/* Team Section */
+.team-section {
+  margin: 6rem 0;
+  text-align: center;
+}
+
+.team-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 3rem;
+  font-weight: 800;
+  background: var(--accent-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 1rem;
+}
+
+.team-subtitle {
+  font-size: 1.3rem;
+  color: var(--text-muted);
+  margin-bottom: 4rem;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.team-grid {
+  display: block; /* Changed from grid to block */
+  margin-top: 3rem;
+}
+/* Team Leader Special Styling */
+.leader-card {
+  grid-column: 1 / -1;
+  max-width: 350px;
+  margin: 0 auto 2rem auto;
+  padding: 3rem 2.5rem;
+  background: linear-gradient(135deg, rgba(59,130,246,0.15), rgba(99,102,241,0.1));
+  border: 2px solid rgba(59, 130, 246, 0.3);
+}
+
+.leader-card .member-name {
+  font-size: 1.8rem !important;
+  background: var(--accent-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.leader-card .member-role {
+  font-size: 1.3rem !important;
+  color: var(--accent-gradient);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Team Members Row - HORIZONTAL */
+.team-members-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  justify-content: center;
+  align-items: stretch;
+}
+
+
+
+@media (max-width: 768px) {
+  .team-members-row {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  
+  .team-members-row .team-member {
+    min-width: 100%;
+    max-width: none;
+  }
+}
+
+.team-member {
+  background: var(--glass-bg);
+  backdrop-filter: blur(30px);
+  border: 1px solid var(--glass-border);
+  border-radius: 24px;
+  padding: 2.5rem 2rem;
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.team-member::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: var(--accent-gradient);
+  transform: scaleX(0);
+  transition: transform 0.5s ease;
+}
+
+.team-member:hover::before {
+  transform: scaleX(1);
+}
+
+.team-member:hover {
+  transform: translateY(-8px);
+  box-shadow: var(--shadow-primary), var(--shadow-glow);
+  border-color: rgba(59, 130, 246, 0.3);
+}
+
+.member-name {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--text-vibrant);
+  margin-bottom: 0.5rem;
+}
+
+.member-role {
+  color: var(--text-secondary);
+  font-size: 1.1rem;
+  font-weight: 500;
+}
+.team-members-row .team-member {
+  flex: 1;
+  min-width: 220px;
+  max-width: 280px;
+}
+
+/* Stats Section */
+.stats-section {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+  margin: 5rem 0;
+}
+
+.stat-card {
+  background: var(--glass-bg);
+  backdrop-filter: blur(30px);
+  border: 1px solid var(--glass-border);
+  border-radius: 24px;
+  padding: 3rem 2rem;
+  text-align: center;
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.stat-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: var(--accent-gradient);
+  transform: scaleX(0);
+  transition: transform 0.5s ease;
+}
+
+.stat-card:hover::before {
+  transform: scaleX(1);
+}
+
+.stat-card:hover {
+  transform: translateY(-10px);
+  box-shadow: var(--shadow-primary), var(--shadow-glow);
+}
+
+.stat-number {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 3.5rem;
+  font-weight: 800;
+  background: var(--accent-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 1rem;
+  display: block;
+}
+
+.stat-label {
+  font-size: 1.2rem;
+  color: var(--text-vibrant);
+  font-weight: 600;
+}
+
+/* Footer */
+footer {
+background: rgba(15, 15, 35, 0.95);
+backdrop-filter: blur(30px);
+text-align: center;
+padding: 3rem;
+color: var(--text-muted);
+border-top: 1px solid var(--glass-border);
+font-size: 1rem;
+margin-top: 4rem;
+}
+/* Animations */
+@keyframes fadeInUp {
+from {
+opacity: 0;
+transform: translateY(40px);
+}
+to {
+opacity: 1;
+transform: translateY(0);
+}
+}
+/* Responsive Design */
+@media (max-width: 1024px) {
+.project-info, .stats-section {
+grid-template-columns: 1fr;
+}
+}
+@media (max-width: 768px) {
+.nav-links {
+display: none;
+position: absolute;
+top: 100%;
+left: 0;
+width: 100%;
+background: rgba(15, 15, 35, 0.98);
+backdrop-filter: blur(30px);
+flex-direction: column;
+padding: 1.5rem 0;
+gap: 0;
+}
+.nav-links.active {
+display: flex;
+}
+.nav-links a {
+padding: 1.2rem 2rem;
+width: 100%;
+text-align: center;
+}
+.hamburger {
+display: flex;
+}
+.main-content {
+padding: 0 1.5rem;
+padding-top: 90px;
+}
+.team-grid {
+grid-template-columns: 1fr;
+}
+}
+@media (max-width: 480px) {
+.hero-title {
+font-size: 2.8rem;
+}
+.info-card, .stat-card, .team-member {
+padding: 2rem 1.5rem;
+}
+}
+</style>
+</head>
+<body>
+<!-- PROFESSIONAL LIVE DATA NETWORK WALLPAPER -->
+<div class="data-network" id="dataNetwork"></div>
+
+<nav>
+  <div class="nav-container">
+    <div class="nav-logo">Digital Bridge</div>
+    <div class="hamburger" id="hamburger">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+    <div class="nav-links" id="navLinks">
+      <a href="index.html" class="active">Home</a>
+      <a href="secondary.html">Secondary Research</a>
+      <a href="primary.html">Primary Research</a>
+      <a href="action.html">Evidence of Action</a>
+      <a href="about.html">About Us</a>
+    </div>
+  </div>
+</nav>
+
+<div class="main-content">
+<section class="hero-section">
+  <h1 class="hero-title">Digital World</h1>
+  <p class="hero-subtitle">
+    Bridging the digital divide for senior citizens through comprehensive research and actionable solutions.
+  </p>
+</section>
+
+<!-- Project Info Cards -->
+<section class="project-info">
+  <div class="info-card">
+    <i class="fas fa-globe info-icon"></i>
+    <h3 class="info-title">Issue</h3>
+    <p class="info-text">
+      Digital Illiteracy in Senior Citizens. As technology rapidly evolves, millions of elderly individuals are being left behind, creating a significant digital divide that impacts their independence, social connections, and access to essential services.
+    </p>
+  </div>
+  
+  <div class="info-card">
+    <i class="fas fa-users info-icon"></i>
+    <h3 class="info-title">Our Mission</h3>
+    <p class="info-text">
+      To empower senior citizens with essential digital skills, ensuring they can navigate the modern digital world with confidence and independence while reducing social isolation and dependency.
+    </p>
+  </div>
+</section>
+
+<!-- Stats Section -->
+<section class="stats-section">
+  <div class="stat-card">
+    <span class="stat-number">4.7M</span>
+    <div class="stat-label">UK Seniors Without Basic Digital Skills</div>
+  </div>
+  <div class="stat-card">
+    <span class="stat-number">25%</span>
+    <div class="stat-label">Global Elderly Digital Literacy Rate</div>
+  </div>
+  <div class="stat-card">
+    <span class="stat-number">60%</span>
+    <div class="stat-label">Seniors Feeling Excluded by Tech</div>
+  </div>
+  <div class="stat-card">
+    <span class="stat-number">32%</span>
+    <div class="stat-label">Belgium Low Digital Skills Rate</div>
+  </div>
+</section>
+
+<!-- Team Section -->
+<section class="team-section">
+  <h2 class="team-title">Our Team</h2>
+  <p class="team-subtitle">
+    Dedicated professionals working together to bridge the digital gap for senior citizens.
+  </p>
+  
+  <div class="team-grid">
+    <!-- Leader - CENTERED FIRST ROW -->
+    <div class="team-member leader-card">
+      <div class="member-name">Sarim Sajid</div>
+      <div class="member-role">Team Leader</div>
+    </div>
+    
+    <!-- Team Members - SECOND ROW -->
+    <div class="team-members-row">
+      <div class="team-member">
+        <div class="member-name">Taha Talib</div>
+        <div class="member-role">Research Lead</div>
+      </div>
+      <div class="team-member">
+        <div class="member-name">Ammar Ateeq</div>
+        <div class="member-role">Data Analyst</div>
+      </div>
+      <div class="team-member">
+        <div class="member-name">Ateeq Ahmed</div>
+        <div class="member-role">Content Specialist</div>
+      </div>
+      <div class="team-member">
+        <div class="member-name">Zohair Mustafa</div>
+        <div class="member-role">Technical Lead</div>
+      </div>
+    </div>
+  </div>
+</section>
+</div>
+
+<footer>
+  <p><i class="fas fa-copyright"></i> 2025 Digital Bridge Project | Professional Research Portal</p>
+</footer>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  // Mobile menu toggle
+  const hamburger = document.getElementById('hamburger');
+  const navLinks = document.getElementById('navLinks');
+  hamburger.addEventListener('click', () => {
+    navLinks.classList.toggle('active');
+    hamburger.classList.toggle('active');
+  });
+  // Close mobile menu on link click
+  document.querySelectorAll('.nav-links a').forEach(link => {
+    link.addEventListener('click', () => {
+      navLinks.classList.remove('active');
+      hamburger.classList.remove('active');
+    });
+  });
+
+  // Initialize PROFESSIONAL LIVE WALLPAPER
+  initProfessionalWallpaper();
+});
+
+// 🔥 PROFESSIONAL LIVE DATA NETWORK WALLPAPER
+function initProfessionalWallpaper() {
+  const container = document.getElementById('dataNetwork');
+
+  // Create Data Nodes
+  for (let i = 0; i < 30; i++) {
+    const node = document.createElement('div');
+    node.className = 'data-node';
+    const size = Math.random() * 10 + 4;
+    node.style.width = size + 'px';
+    node.style.height = size + 'px';
+    node.style.left = Math.random() * 100 + '%';
+    node.style.top = Math.random() * 100 + '%';
+    node.style.animationDelay = Math.random() * 3 + 's';
+    node.style.animationDuration = (2.5 + Math.random() * 2) + 's';
+    container.appendChild(node);
+  }
+
+  // Create Data Streams
+  for (let i = 0; i < 20; i++) {
+    const stream = document.createElement('div');
+    stream.className = 'data-stream';
+    stream.style.left = Math.random() * 100 + '%';
+    stream.style.top = Math.random() * 100 + '%';
+    stream.style.width = (Math.random() * 250 + 120) + 'px';
+    stream.style.animationDelay = Math.random() * 4 + 's';
+    stream.style.animationDuration = (3 + Math.random() * 3) + 's';
+    container.appendChild(stream);
+  }
+
+  // Create Floating Data Points
+  for (let i = 0; i < 25; i++) {
+    const point = document.createElement('div');
+    point.className = 'data-point';
+    const size = Math.random() * 5 + 2;
+    point.style.width = size + 'px';
+    point.style.height = size + 'px';
+    point.style.left = Math.random() * 100 + '%';
+    point.style.animationDelay = Math.random() * -15 + 's';
+    point.style.animationDuration = (12 + Math.random() * 8) + 's';
+    container.appendChild(point);
+  }
+}
+
+// Enhanced scroll parallax for wallpaper
+document.addEventListener('scroll', () => {
+  const scrolled = window.pageYOffset;
+  const parallax = document.querySelector('.data-network');
+  const speed = scrolled * 0.15;
+
+  if (parallax) {
+    parallax.style.transform = `translateY(${speed}px)`;
+  }
+});
+
+// Performance optimization: Intersection Observer
+const observerOptions = {
+  threshold: 0.1,
+  rootMargin: '0px 0px -100px 0px'
+};
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.style.opacity = '1';
+      entry.target.style.transform = 'translateY(0)';
+    }
+  });
+}, observerOptions);
+
+// Observe all cards
+document.querySelectorAll('.info-card, .stat-card, .team-member, .team-section').forEach((card, index) => {
+  card.style.opacity = '0';
+  card.style.transform = 'translateY(50px)';
+  card.style.transition = `all 1s cubic-bezier(0.4, 0, 0.2, 1) ${index * 0.1}s`;
+  observer.observe(card);
+});
+
+// Preload and entrance animation
+window.addEventListener('load', () => {
+  document.body.classList.add('loaded');
+  setTimeout(() => {
+    document.querySelector('.data-network').style.opacity = '1';
+  }, 1000);
+});
+</script>
+</body>
+</html>
